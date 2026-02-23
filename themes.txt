@@ -1,0 +1,33 @@
+BO1
+DÉTECTION DU RISQUE (DONNÉES DE MODE DE VIE)
+Dépistage basé sur les habitudes de vie
+BO (Objectif Métier) : Dépistage Proactif des Risques. Identifier les individus présentantun risque élevé de développer Alzheimer avant l'apparition des symptômes cliniques,
+permettant ainsi des interventions précoces sur le mode de vie.
+DSO (Objectif Data Science) : Prédire la probabilité (de 0 à 1) qu'un patient soit atteint
+d'Alzheimer en fonction d'entrées tabulaires comme le régime alimentaire, le sommeil
+ou l'âge.
+Type de ML : Apprentissage Supervisé >>> Classification Binaire.
+
+
+BO2
+DÉTECTION DE LA SÉVÉRITÉ (SCANNERS IRM)
+Diagnostic du stade de la maladie à partir d'images
+BO (Objectif Métier) : Graduation Clinique Automatisée. Assister les radiologues en
+classant automatiquement la sévérité de la démence à partir des IRM pour prioriser les
+cas urgents (Triage).
+DSO (Objectif Data Science) : Classer une image d'entrée dans l'une des 4 catégories
+spécifiques : Sain, Très léger, Léger, Modéré.
+Type de ML : Apprentissage Supervisé >>>>> Classification d'Images Multi-classes.
+
+BO3
+RECOMMANDATION (DONNÉES DE MODE DE VIE)
+Suggestions de changements pour réduire le risque
+BO (Objectif Métier) : Optimisation Personnalisée de la Santé. Fournir des conseils
+concrets et personnalisés aux utilisateurs "à risque" pour modifier leur comportement
+(ex: "Augmenter le sommeil d'une heure") afin de ressembler à la population "saine".
+DSO (Objectif Data Science) : Segmenter les patients en groupes homogènes à l’aide de
+techniques de clustering afin d’identifier des profils de risque distincts. Pour chaque
+cluster, analyser les caractéristiques dominantes et générer des recommandations
+personnalisées de changements minimaux permettant de rapprocher les individus du
+profil « sain ».
+Type de ML : Apprentissage Non-Supervisé (Clustering et Recommandation)
