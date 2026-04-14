@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alzheimer's ML — Results &amp; Benchmarks</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>Alzheimer's Disease — ML Pipeline</h1>
+      <p class="subtitle">Results, Benchmarks &amp; Findings&ensp;|&ensp;TechHive — Thynk Unlimited&ensp;|&ensp;2026</p>
+    </div>
+  </header>
+
+  <!-- ───── Tab bar ───── -->
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="bo1" role="tab" aria-selected="true">
+      <span class="tab-icon">🩺</span>
+      <span>BO1 — Risk Prediction</span>
+    </button>
+    <button class="tab" data-tab="bo2" role="tab" aria-selected="false">
+      <span class="tab-icon">🧠</span>
+      <span>BO2 — MRI Classification</span>
+    </button>
+    <button class="tab" data-tab="bo3" role="tab" aria-selected="false">
+      <span class="tab-icon">📋</span>
+      <span>BO3 — Care Plan Recommender</span>
+    </button>
+  </nav>
+
+  <main>
+    <!-- ════════════════════════════════════════════════════════════════
+         TAB 1 — BO1  Risk Prediction
+         ════════════════════════════════════════════════════════════════ -->
+    <section id="bo1" class="tab-panel active" role="tabpanel">
+
+      <!-- Hero -->
+      <div class="hero">
+        <h2>BO1 — Alzheimer's Disease Risk Assessment</h2>
+        <p>A machine-learning screening tool that predicts Alzheimer's risk from clinical &amp; demographic data, prioritising recall to minimise missed diagnoses.</p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-card accent-blue">
+          <span class="kpi-value">84.42%</span>
+          <span class="kpi-label">Accuracy</span>
+        </div>
+        <div class="kpi-card accent-purple">
+          <span class="kpi-value">0.9100</span>
+          <span class="kpi-label">ROC-AUC</span>
+        </div>
+        <div class="kpi-card accent-green">
+          <span class="kpi-value">86.84%</span>
+          <span class="kpi-label">Recall (AD)</span>
+        </div>
+        <div class="kpi-card accent-red">
+          <span class="kpi-value">20</span>
+          <span class="kpi-label">False Negatives</span>
+        </div>
+      </div>
+
+      <!-- Dataset -->
+      <div class="card">
+        <h3>Dataset</h3>
+        <ul class="detail-list">
+          <li><strong>Source:</strong> <code>alzheimers_disease_data.csv</code></li>
+          <li><strong>Patients:</strong> 2,149&ensp;×&ensp;35 features</li>
+          <li><strong>Class balance:</strong> 64.6% Healthy / 35.4% Alzheimer's</li>
+          <li><strong>Missing values:</strong> 0 &ensp;|&ensp; <strong>Duplicates:</strong> 0</li>
+        </ul>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card">
+        <h3>Pipeline</h3>
+        <div class="pipeline">
+          <div class="pipe-step">LassoCV (5-fold)<br><small>33 → 16 features</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">Min-Max + Standard&nbsp;Scaler</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">PCA (95% variance)<br><small>16 components retained</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">4 Classifiers<br><small>SVM, RF, LR, GB</small></div>
+        </div>
+      </div>
+
+      <!-- Target Class Balance Chart -->
+      <div class="card">
+        <h3>Target Variable &amp; Feature Selection</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo1-class-balance"></canvas></div>
+          <div class="chart-container"><canvas id="bo1-pca-scree"></canvas></div>
+        </div>
+      </div>
+
+      <!-- PCA Cumulative Variance -->
+      <div class="card">
+        <h3>PCA — Cumulative Variance Explained</h3>
+        <div class="chart-container chart-wide"><canvas id="bo1-pca-cumvar"></canvas></div>
+      </div>
+
+      <!-- Benchmark Charts -->
+      <div class="card">
+        <h3>Model Benchmark — Visual Comparison</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo1-radar"></canvas></div>
+          <div class="chart-container"><canvas id="bo1-bar"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ROC-AUC Comparison -->
+      <div class="card">
+        <h3>ROC-AUC — Model Comparison</h3>
+        <div class="chart-container chart-wide"><canvas id="bo1-roc"></canvas></div>
+      </div>
+
+      <!-- Benchmark Table -->
+      <div class="card">
+        <h3>Model Benchmark</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Model</th><th>Accuracy</th><th>ROC-AUC</th><th>F1</th><th>Precision</th><th>Recall</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="highlight">
+                <td><strong>SVM (RBF) ✅</strong></td><td>0.8442</td><td>0.9100</td><td>0.7976</td><td>0.7374</td><td>0.8684</td>
+              </tr>
+              <tr>
+                <td>Random Forest</td><td>0.8279</td><td>0.8841</td><td>0.7319</td><td>0.8145</td><td>0.6645</td>
+              </tr>
+              <tr>
+                <td>Logistic Regression</td><td>0.8070</td><td>0.8850</td><td>0.7552</td><td>0.6845</td><td>0.8421</td>
+              </tr>
+              <tr>
+                <td>Gradient Boosting</td><td>0.8163</td><td>0.8744</td><td>0.7304</td><td>0.7589</td><td>0.7039</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix Chart -->
+      <div class="card">
+        <h3>Confusion Matrices</h3>
+        <div class="chart-container chart-wide"><canvas id="bo1-cm"></canvas></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Model</th><th>TN</th><th>FP</th><th>FN</th><th>TP</th></tr>
+            </thead>
+            <tbody>
+              <tr class="highlight"><td><strong>SVM (RBF)</strong></td><td>231</td><td>47</td><td class="fn-cell">20</td><td>132</td></tr>
+              <tr><td>Random Forest</td><td>255</td><td>23</td><td>51</td><td>101</td></tr>
+              <tr><td>Logistic Regression</td><td>219</td><td>59</td><td>24</td><td>128</td></tr>
+              <tr><td>Gradient Boosting</td><td>244</td><td>34</td><td>45</td><td>107</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="card">
+        <h3>Key Findings</h3>
+        <ul class="findings">
+          <li><strong>SVM yields the fewest false negatives (20)</strong> — critical in screening where missed diagnoses delay treatment.</li>
+          <li>SVM's ROC curve dominates all other models across most FPR thresholds.</li>
+          <li>Higher false positives (47) are clinically acceptable: positives trigger confirmatory MRI.</li>
+          <li>All 16 Lasso-selected features genuinely informative — PCA could not reduce further.</li>
+          <li>Clinical priority: <em>Recall &gt; Precision</em> for a screening tool.</li>
+        </ul>
+      </div>
+
+      <!-- Limitations -->
+      <div class="card card-warn">
+        <h3>Limitations</h3>
+        <ul class="findings">
+          <li>SVM is a black-box model (SHAP / LIME needed for regulatory approval).</li>
+          <li>Single train/test split — no cross-validation.</li>
+          <li>No neuroimaging or genetic markers (APOE ε4).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         TAB 2 — BO2  MRI Classification
+         ════════════════════════════════════════════════════════════════ -->
+    <section id="bo2" class="tab-panel" role="tabpanel">
+
+      <div class="hero">
+        <h2>BO2 — MRI Severity Classification</h2>
+        <p>Automated graduation of Alzheimer's severity from brain MRI scans to assist radiologists in triage and prioritization.</p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-card accent-blue">
+          <span class="kpi-value">50.70%</span>
+          <span class="kpi-label">Best Accuracy</span>
+        </div>
+        <div class="kpi-card accent-purple">
+          <span class="kpi-value">4</span>
+          <span class="kpi-label">Severity Classes</span>
+        </div>
+        <div class="kpi-card accent-green">
+          <span class="kpi-value">~6,400</span>
+          <span class="kpi-label">Training Images</span>
+        </div>
+        <div class="kpi-card accent-red">
+          <span class="kpi-value">224×224</span>
+          <span class="kpi-label">Input Resolution</span>
+        </div>
+      </div>
+
+      <!-- Dataset -->
+      <div class="card">
+        <h3>Dataset</h3>
+        <ul class="detail-list">
+          <li><strong>Source:</strong> Kaggle — Alzheimer's MRI Dataset</li>
+          <li><strong>Total:</strong> ~6,400 training images across 4 classes</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Class</th><th>Images</th><th>Share</th></tr></thead>
+            <tbody>
+              <tr><td>NonDemented (Healthy)</td><td>3,200</td><td>50.0%</td></tr>
+              <tr><td>VeryMildDemented</td><td>2,240</td><td>35.0%</td></tr>
+              <tr><td>MildDemented</td><td>896</td><td>14.0%</td></tr>
+              <tr class="highlight"><td>ModerateDemented</td><td>64</td><td>1.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card">
+        <h3>Pipeline</h3>
+        <div class="pipeline">
+          <div class="pipe-step">Resize 224×224<br><small>Normalise [0,1]</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">Data Augmentation<br><small>Rotate, Flip, Zoom, Shift</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">Class Weights<br><small>Inverse frequency</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">3 Models<br><small>CNN, EfficientNet, ResNet</small></div>
+        </div>
+      </div>
+
+      <!-- Models -->
+      <div class="card">
+        <h3>Model Architectures</h3>
+        <div class="model-cards">
+          <div class="model-card">
+            <h4>CNN Custom (Baseline)</h4>
+            <p>4 conv blocks (32→64→128→256), GlobalAveragePooling, Dense, Dropout</p>
+            <p class="small">Optimizer: Adam&ensp;|&ensp;LR: 0.001</p>
+          </div>
+          <div class="model-card">
+            <h4>EfficientNetB0</h4>
+            <p>Pre-trained ImageNet, 2-phase: feature extraction → fine-tuning</p>
+            <p class="small">GAP + Dense(256) + Dense(128) + Softmax</p>
+          </div>
+          <div class="model-card">
+            <h4>ResNet50</h4>
+            <p>Pre-trained ImageNet, fine-tuned</p>
+            <p class="small">GAP + Dense(256) + Softmax</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benchmark Charts -->
+      <div class="card">
+        <h3>Benchmark — Visual Comparison <span class="badge">Fast Training Mode</span></h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo2-bar"></canvas></div>
+          <div class="chart-container"><canvas id="bo2-doughnut"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix Heatmap -->
+      <div class="card">
+        <h3>Confusion Matrix — CNN Custom (Best Model)</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo2-cm-cnn"></canvas></div>
+          <div class="chart-container"><canvas id="bo2-per-class"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Class Probability Demo -->
+      <div class="card">
+        <h3>Sample Prediction — Class Probabilities</h3>
+        <div class="chart-container chart-wide"><canvas id="bo2-proba"></canvas></div>
+        <p class="note">Example MRI prediction: probabilities are nearly uniform (~25% each), showing the model struggles to differentiate classes with limited training data.</p>
+      </div>
+
+      <!-- Benchmark Table -->
+      <div class="card">
+        <h3>Benchmark Results <span class="badge">Fast Training Mode</span></h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Model</th><th>Accuracy</th><th>F1 Macro</th><th>F1 Weighted</th></tr>
+            </thead>
+            <tbody>
+              <tr class="highlight"><td><strong>CNN Custom ✅</strong></td><td>50.70%</td><td>18.10%</td><td>35.37%</td></tr>
+              <tr><td>EfficientNetB0</td><td>35.00%</td><td>12.96%</td><td>18.15%</td></tr>
+              <tr><td>ResNet50</td><td>1.95%</td><td>1.43%</td><td>1.88%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">⚠ Results obtained with <code>USE_FAST_TRAINING = True</code> (~100 images, 25 per class). Full training would yield significantly better performance.</p>
+      </div>
+
+      <!-- Key Challenges -->
+      <div class="card">
+        <h3>Key Challenges</h3>
+        <ul class="findings">
+          <li><strong>Severe class imbalance:</strong> ModerateDemented has only 64 images (1%).</li>
+          <li><strong>Inter-class confusion:</strong> VeryMild vs Mild dementia is visually subtle.</li>
+          <li><strong>Small dataset:</strong> ~5,000 effective training images — small for deep learning.</li>
+        </ul>
+      </div>
+
+      <!-- Suggested Improvements -->
+      <div class="card card-warn">
+        <h3>Suggested Improvements</h3>
+        <ul class="findings">
+          <li>More data / synthetic generation (GANs) for rare classes.</li>
+          <li>Focal Loss instead of categorical cross-entropy.</li>
+          <li>Ensemble methods across architectures.</li>
+          <li>Vision Transformers (ViT).</li>
+          <li>Grad-CAM for clinical explainability.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         TAB 3 — BO3  Care Plan Recommender
+         ════════════════════════════════════════════════════════════════ -->
+    <section id="bo3" class="tab-panel" role="tabpanel">
+
+      <div class="hero">
+        <h2>BO3 — Personalized Care Plan Recommender</h2>
+        <p>Segment patients into clinically homogeneous groups via unsupervised learning, then recommend tailored care plans through collaborative-filtering peer similarity.</p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-row">
+        <div class="kpi-card accent-blue">
+          <span class="kpi-value">87%</span>
+          <span class="kpi-label">Consensus Accuracy</span>
+        </div>
+        <div class="kpi-card accent-purple">
+          <span class="kpi-value">K = 2</span>
+          <span class="kpi-label">Optimal Clusters</span>
+        </div>
+        <div class="kpi-card accent-green">
+          <span class="kpi-value">0.1272</span>
+          <span class="kpi-label">Silhouette Score</span>
+        </div>
+        <div class="kpi-card accent-red">
+          <span class="kpi-value">9 Peers</span>
+          <span class="kpi-label">KNN Neighbours</span>
+        </div>
+      </div>
+
+      <!-- Dataset -->
+      <div class="card">
+        <h3>Dataset</h3>
+        <ul class="detail-list">
+          <li><strong>Patient data:</strong> 2,149 patients × 33 columns (<code>alzheimers_disease_data.csv</code>)</li>
+          <li><strong>Care plans:</strong> <code>care_plan_recommendations.csv</code></li>
+          <li><strong>Features:</strong> 16 Lasso-selected from BO1 (Age, MMSE, ADL, MemoryComplaints, …)</li>
+          <li><strong>Risk distribution:</strong> HIGH ~1,620&ensp;|&ensp;MEDIUM ~260&ensp;|&ensp;LOW ~260</li>
+        </ul>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card">
+        <h3>Pipeline</h3>
+        <div class="pipeline">
+          <div class="pipe-step">Merge + Encode<br><small>Ordinal + One-Hot</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">StandardScaler<br><small>16 features</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">PCA ≥ 90%<br><small>15 components (94.84%)</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">KMeans (K=2)<br><small>Elbow + Silhouette</small></div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">KNN CF<br><small>Cosine, 9 peers</small></div>
+        </div>
+      </div>
+
+      <!-- PCA & Elbow Charts -->
+      <div class="card">
+        <h3>PCA Scree Plot &amp; Elbow Method</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo3-pca-scree"></canvas></div>
+          <div class="chart-container"><canvas id="bo3-elbow"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Silhouette Score vs K -->
+      <div class="card">
+        <h3>Silhouette Score vs Number of Clusters</h3>
+        <div class="chart-container chart-wide"><canvas id="bo3-silhouette-k"></canvas></div>
+      </div>
+
+      <!-- Clustering Benchmark Charts -->
+      <div class="card">
+        <h3>Clustering — Visual Comparison</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo3-cluster-bar"></canvas></div>
+          <div class="chart-container"><canvas id="bo3-consensus"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Cluster Profiles Heatmap -->
+      <div class="card">
+        <h3>Cluster Profiles — Z-scored Feature Means</h3>
+        <div class="chart-container chart-wide"><canvas id="bo3-cluster-profile"></canvas></div>
+        <p class="note">Cluster 0: younger, higher education, higher MMSE/ADL (healthier). Cluster 1: older, lower cognitive scores, more comorbidities (at-risk).</p>
+      </div>
+
+      <!-- Clustering Benchmark Table -->
+      <div class="card">
+        <h3>Clustering Benchmark</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Algorithm</th><th>Clusters</th><th>Silhouette</th><th>Purity</th></tr>
+            </thead>
+            <tbody>
+              <tr class="highlight"><td><strong>KMeans ✅</strong></td><td>2</td><td>0.1272</td><td>0.6463</td></tr>
+              <tr><td>Agglomerative (Ward)</td><td>3</td><td>0.1265</td><td>0.6463</td></tr>
+              <tr><td>DBSCAN</td><td>varies</td><td>0.1476</td><td>0.6495</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">KMeans chosen over DBSCAN for interpretable centroids, scalability O(n×k×d), and real-time assignment of new patients.</p>
+      </div>
+
+      <!-- Recommendation Engine -->
+      <div class="card">
+        <h3>Recommendation Engine</h3>
+        <div class="reco-summary">
+          <div class="reco-block">
+            <h4>Method</h4>
+            <p>KNN — brute-force, cosine similarity</p>
+          </div>
+          <div class="reco-block">
+            <h4>Neighbours</h4>
+            <p>10 (1 self + 9 peers)</p>
+          </div>
+          <div class="reco-block">
+            <h4>Consensus Accuracy</h4>
+            <p class="big-num">87 / 100</p>
+            <p class="small">test patients matched their actual clinical care plan</p>
+          </div>
+        </div>
+        <p class="note">Recommendations are traceable: e.g., <em>"7/9 of your clinical peers received this plan."</em></p>
+      </div>
+
+      <!-- Risk & Focus Distribution -->
+      <div class="card">
+        <h3>Care Plan Distributions</h3>
+        <div class="chart-row">
+          <div class="chart-container"><canvas id="bo3-risk-dist"></canvas></div>
+          <div class="chart-container"><canvas id="bo3-focus-dist"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Sensitivity Analysis -->
+      <div class="card">
+        <h3>PCA Sensitivity Analysis</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dimensions</th><th>Variance Retained</th><th>Clustering Quality</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>~20%</td><td>Low</td></tr>
+              <tr><td>3</td><td>~28%</td><td>Moderate</td></tr>
+              <tr class="highlight"><td><strong>15 (optimal)</strong></td><td>94.84%</td><td>Best</td></tr>
+              <tr><td>16 (all)</td><td>100%</td><td>Slightly noisy</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="card">
+        <h3>Key Findings</h3>
+        <ul class="findings">
+          <li><strong>87% consensus accuracy</strong> — the system reliably reproduces clinical care-plan decisions.</li>
+          <li>Z-scored heatmaps reveal distinct patient archetypes (high MMSE/ADL = healthier; high MemoryComplaints = advanced disease).</li>
+          <li>Cluster–Diagnosis alignment confirms unsupervised segmentation captures meaningful clinical groups.</li>
+          <li>KMeans chosen for deployment: interpretable centroids + O(n×k×d) scalability.</li>
+        </ul>
+      </div>
+
+      <!-- Limitations -->
+      <div class="card card-warn">
+        <h3>Limitations</h3>
+        <ul class="findings">
+          <li>Cold-start problem for new care plans.</li>
+          <li>Equal feature weighting — domain-specific weighting could help.</li>
+          <li>Binary interaction signal (no patient outcome data).</li>
+          <li>Historical care plan bias propagation.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ───── Cross-notebook integration footer ───── -->
+  <footer>
+    <div class="integration">
+      <h3>End-to-End Integration</h3>
+      <div class="pipeline pipeline-footer">
+        <div class="pipe-step footer-step">
+          <strong>BO1</strong><br>
+          Detect at-risk patients<br>
+          <small>SVM — AUC 0.91</small>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step footer-step">
+          <strong>BO2</strong><br>
+          Classify MRI severity<br>
+          <small>CNN — 4 classes</small>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step footer-step">
+          <strong>BO3</strong><br>
+          Recommend care plan<br>
+          <small>KNN CF — 87% accuracy</small>
+        </div>
+      </div>
+    </div>
+    <p class="copy">&copy; 2026 TechHive — Thynk Unlimited</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="charts.js"></script>
+</body>
+</html>
